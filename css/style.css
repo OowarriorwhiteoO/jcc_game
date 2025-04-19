@@ -1,0 +1,252 @@
+/* css/style.css */
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+/* Fuentes Temáticas */
+.font-medieval {
+    font-family: 'MedievalSharp', cursive;
+}
+.font-roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Estilos básicos para las zonas de juego */
+.game-zone {
+    min-height: 64px; /* Ajustado ligeramente */
+    transition: background-color 0.3s ease; /* Transición para drop target */
+}
+
+.field-zone {
+    min-height: 160px; /* 10rem */
+}
+
+.deck-zone, .discard-zone {
+    min-height: 80px; /* Ajustado para h-20 */
+    min-width: 64px; /* Ajustado para w-16 */
+}
+
+/* Estilo base para las cartas */
+.card {
+    width: 80px;
+    height: 112px;
+    background-color: #2d3748; /* gray-800 */
+    border: 1px solid #a0aec0; /* gray-400 */
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    position: relative;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    overflow: hidden;
+    color: #e2e8f0; /* gray-300 */
+    user-select: none; /* Evitar selección de texto en cartas */
+}
+
+.card:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+/* Estilo específico para cartas en la mano */
+#player-hand-area .card {
+    width: 90px;
+    height: 126px;
+}
+#player-hand-area .card:hover {
+     transform: scale(1.5) translateY(-20px); /* Zoom mayor */
+     z-index: 11; /* Asegurar que esté por encima de otras cartas de la mano */
+}
+
+
+/* Estilo para cartas de Recurso */
+.card.resource-card {
+    background-color: #1a365d; /* blue-900 */
+    border-color: #63b3ed; /* blue-400 */
+    width: 40px;
+    height: 56px;
+    font-size: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+.card.resource-card:hover {
+    transform: scale(1.1);
+    z-index: 5;
+}
+/* En la zona de recursos, no necesitan sombra ni tanto zoom */
+#player-resources .card.resource-card,
+#opponent-resources .card.resource-card {
+     box-shadow: none;
+     cursor: default; /* No son interactivas una vez jugadas */
+}
+#player-resources .card.resource-card:hover,
+#opponent-resources .card.resource-card:hover {
+    transform: scale(1.05); /* Zoom mínimo */
+}
+
+
+/* Estilo para cartas Desafiante */
+.card.challenger-card {
+    background-color: #2c5282; /* blue-800 */
+    border-color: #63b3ed; /* blue-400 */
+}
+
+/* Estilo para cartas Soporte (si se añaden) */
+.card.support-card {
+    background-color: #2f855a; /* green-700 */
+    border-color: #68d391; /* green-400 */
+}
+
+
+/* Clases para indicar estado */
+.card.playable {
+    border-color: #f6e05e; /* yellow-400 */
+    box-shadow: 0 0 10px #f6e05e;
+}
+
+.card.tapped {
+    transform: rotate(15deg) scale(0.95); /* Inclinada en lugar de 90 grados */
+    opacity: 0.8;
+}
+.card.tapped:hover {
+    transform: rotate(15deg) scale(1.0); /* Zoom ligero al hacer hover */
+    opacity: 1.0;
+}
+
+/* Clase para atacante seleccionado */
+.selected-attacker {
+    outline: 3px solid #f56565; /* red-500 */
+    outline-offset: 2px;
+    box-shadow: 0 0 15px #f56565;
+}
+
+/* Clase para dorso de carta oponente (simplificado) */
+.opponent-card-back {
+    background-color: #4a5568; /* gray-600 */
+    border: 1px solid #718096; /* gray-500 */
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #a0aec0; /* gray-400 */
+}
+.opponent-card-back::after {
+    content: "?"; /* O un icono */
+}
+/* Aplicar a cartas oponente en mano (si se renderizaran) y campo */
+#opponent-field .card,
+#opponent-resources .card { /* Si queremos ocultar recursos oponente */
+    /* Por ahora, mostramos las cartas del oponente en campo */
+    /* Si quisiéramos ocultarlas: */
+    /* pointer-events: none; */
+}
+/* Si quisiéramos mostrar dorsos en campo oponente: */
+/* #opponent-field .card > *:not(.opponent-card-back) { display: none; } */
+/* #opponent-field .card { padding: 0; } */
+/* #opponent-field .card .opponent-card-back { display: flex; } */
+
+
+/* Estructura interna de la carta */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+    line-height: 1; /* Ajuste para que no ocupe mucho */
+}
+.card-cost {
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #f6e05e; /* yellow-400 */
+    flex-shrink: 0; /* Evita que se encoja */
+}
+.card-name {
+    flex-grow: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2px; /* Espacio entre nombre y coste/stats */
+}
+.card-image-placeholder {
+    background-color: #4a5568; /* gray-600 */
+    height: 40px;
+    margin: 4px 0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    color: #a0aec0; /* gray-400 */
+}
+.card-text {
+    font-size: 0.55rem;
+    line-height: 1.2;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-bottom: 2px;
+    /* Habilitar scroll si el texto es muy largo (opcional) */
+    /* max-height: 30px; */
+    /* overflow-y: auto; */
+}
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 0.6rem;
+    margin-top: auto;
+    line-height: 1; /* Ajuste */
+}
+.card-attack::before { content: '⚔️'; margin-right: 2px; }
+.card-health::before { content: '❤️'; margin-right: 2px; }
+
+/* Estilo para el Log */
+#game-log {
+    scrollbar-width: thin;
+    scrollbar-color: #4a5568 #1a202c;
+}
+#game-log::-webkit-scrollbar {
+    width: 5px;
+}
+#game-log::-webkit-scrollbar-track {
+    background: #1a202c;
+}
+#game-log::-webkit-scrollbar-thumb {
+    background-color: #4a5568;
+    border-radius: 3px;
+}
+
+/* Clases de ayuda para arrastrar (si se implementa) */
+.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+.drop-target {
+    border: 2px dashed #f6e05e; /* yellow-400 */
+    background-color: rgba(246, 224, 94, 0.1); /* Fondo sutil al ser target */
+}
