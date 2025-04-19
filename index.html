@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethelgard JCC - Prototipo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-800 text-white font-roboto flex flex-col min-h-screen">
+
+    <div id="hud" class="p-2 bg-gray-900 bg-opacity-80 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
+        <div id="opponent-info" class="flex items-center space-x-4">
+            <div class="text-center">
+                <span class="block text-sm font-medieval">Oponente</span>
+                <span id="opponent-life" class="block text-lg font-bold">20 ❤️</span>
+            </div>
+            <div class="text-center">
+                <span class="block text-xs">Mano</span>
+                <span id="opponent-hand-count" class="block text-sm font-bold">5</span>
+            </div>
+            <div class="text-center">
+                <span class="block text-xs">Mazo</span>
+                <span id="opponent-deck-count" class="block text-sm font-bold">35</span>
+            </div>
+            <div class="text-center">
+                <span class="block text-xs">Cristales</span>
+                <span id="opponent-crystals" class="block text-sm font-bold">0 / 0</span>
+            </div>
+        </div>
+
+        <div id="turn-info" class="text-center">
+            <span class="block text-lg font-medieval">Turno <span id="turn-number">1</span></span>
+            <span id="current-player" class="block text-sm">Jugador</span>
+            <button id="end-turn-button" class="mt-1 px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-xs font-bold transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">Terminar Turno</button>
+        </div>
+
+        <div id="player-info" class="flex items-center space-x-4">
+             <div class="text-center">
+                <span class="block text-xs">Cristales</span>
+                <span id="player-crystals" class="block text-sm font-bold">0 / 0</span>
+            </div>
+             <div class="text-center">
+                <span class="block text-xs">Mazo</span>
+                <span id="player-deck-count" class="block text-sm font-bold">35</span>
+            </div>
+            <div class="text-center">
+                <span class="block text-xs">Mano</span>
+                <span id="player-hand-count" class="block text-sm font-bold">5</span>
+            </div>
+            <div class="text-center">
+                <span class="block text-sm font-medieval">Jugador</span>
+                <span id="player-life" class="block text-lg font-bold">20 ❤️</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="flex-grow pt-20 pb-32 flex flex-col items-center justify-center p-4 space-y-4">
+        <div id="opponent-side" class="w-full max-w-6xl">
+            <div id="opponent-field" class="game-zone field-zone bg-red-900 bg-opacity-30 min-h-[160px] flex justify-center items-center space-x-2 p-2 rounded border border-red-700">
+                <span class="text-gray-400 text-sm">Campo del Oponente</span>
+            </div>
+            <div class="flex justify-between items-start mt-1">
+                <div id="opponent-resources" class="game-zone resource-zone bg-blue-900 bg-opacity-30 h-16 w-1/4 flex items-center justify-start p-1 rounded border border-blue-700 space-x-1 overflow-x-auto">
+                    <span class="text-gray-400 text-xs pl-1">Recursos Op.</span>
+                </div>
+                 <div class="flex space-x-2">
+                    <div id="opponent-deck" class="game-zone deck-zone bg-gray-700 w-16 h-20 flex flex-col items-center justify-center rounded border border-gray-500 cursor-pointer text-center">
+                        <span class="text-xs">Mazo</span>
+                        <span id="opponent-deck-count-visual" class="text-lg font-bold">35</span>
+                    </div>
+                    <div id="opponent-discard" class="game-zone discard-zone bg-gray-600 w-16 h-20 flex items-center justify-center rounded border border-gray-400 text-center p-1">
+                        <span class="text-xs">Descarte</span>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        <div id="player-side" class="w-full max-w-6xl">
+             <div class="flex justify-between items-end mb-1">
+                 <div id="player-resources" class="game-zone resource-zone bg-blue-900 bg-opacity-30 h-16 w-1/4 flex items-center justify-start p-1 rounded border border-blue-700 space-x-1 overflow-x-auto">
+                     <span class="text-gray-400 text-xs pl-1">Mis Recursos</span>
+                 </div>
+                  <div class="flex space-x-2">
+                    <div id="player-deck" class="game-zone deck-zone bg-gray-700 w-16 h-20 flex flex-col items-center justify-center rounded border border-gray-500 cursor-pointer hover:bg-gray-600 transition-colors duration-200 text-center">
+                        <span class="text-xs">Mazo</span>
+                        <span id="player-deck-count-visual" class="text-lg font-bold">35</span>
+                    </div>
+                    <div id="player-discard" class="game-zone discard-zone bg-gray-600 w-16 h-20 flex items-center justify-center rounded border border-gray-400 text-center p-1">
+                        <span class="text-xs">Descarte</span>
+                    </div>
+                 </div>
+            </div>
+            <div id="player-field" class="game-zone field-zone bg-green-900 bg-opacity-30 min-h-[160px] flex justify-center items-center space-x-2 p-2 rounded border border-green-700">
+                <span class="text-gray-400 text-sm">Mi Campo</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="player-hand-area" class="fixed bottom-0 left-0 right-0 h-32 bg-gray-900 bg-opacity-90 p-2 flex justify-center items-center space-x-2 overflow-x-auto border-t border-gray-700 z-40">
+        <span class="text-gray-500">Mano del Jugador</span>
+        </div>
+
+    <div id="game-log" class="fixed bottom-36 right-0 w-64 h-48 bg-black bg-opacity-70 p-2 text-xs overflow-y-auto border border-gray-600 rounded m-2 z-50">
+        <h4 class="font-bold mb-1">Log del Juego</h4>
+        </div>
+
+    <div id="message-overlay" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-60 hidden">
+        <div class="bg-gray-800 p-6 rounded shadow-lg text-center max-w-sm">
+            <p id="message-text" class="text-lg mb-4"></p>
+            <button id="message-close-button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors duration-200">Cerrar</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
